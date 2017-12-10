@@ -1,0 +1,4 @@
+/* Import Global Styles Here like vendor */
+/* Bootstrap css bundled reset.css so that no use to import it once more */
+
+@import "~bootstrap/dist/css/bootstrap.css";

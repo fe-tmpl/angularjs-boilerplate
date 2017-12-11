@@ -7,13 +7,16 @@
 
 # Node
 node_modules
-*.log
-
-# Yarn
+package-lock.json
 yarn.lock
 
-# Static Built Resources
+# Logs
+*.log
+
+# Build & Distribution
+build
+dist
 public
 
-# Maven Built
-target
+# Test
+coverage

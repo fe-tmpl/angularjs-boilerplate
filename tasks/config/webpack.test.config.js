@@ -1,17 +1,19 @@
 var webpack = require('webpack');
 var merge = require('webpack-merge');
-
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
+var _ = require('lodash');
 
 var baseConfig = require('./base.config');
 var webpackBaseConfig = require('./webpack.base.config');
 
 var pathUtil = require('../utils/path.util');
+var path = require('path');
 
-var webpackTestConfig = merge(webpackBaseConfig, {
+var webpackBaseConfigWithoutPlugins = _.cloneDeep(webpackBaseConfig);
+webpackBaseConfigWithoutPlugins.module.rules = [];
+delete webpackBaseConfigWithoutPlugins.entry;
+
+var webpackTestConfig = merge(webpackBaseConfigWithoutPlugins, {
 
   devtool: 'eval-source-map',
   output: {
@@ -34,13 +36,15 @@ var webpackTestConfig = merge(webpackBaseConfig, {
         loader: 'istanbul-instrumenter-loader'
       },
       {
+        test: /\.html$/,
+        exclude: pathUtil.resolve(baseConfig.dir.src) + path.sep + 'index.html',
+        loader: 'ng-cache-loader?prefix=[dir]/[dir]/[dir]'
+      },
+      {
         test: /\.css$/,
         include: [
-          pathUtil.resolve('src/main/webapp'),
-          pathUtil.resolve('src/test/js/unit/specs')
-        ],
-        exclude: [
-          /node_modules/
+          pathUtil.resolve('src'),
+          pathUtil.resolve('src/test/unit/specs')
         ],
         use: ['style-loader', 'css-loader']
       },
@@ -50,6 +54,15 @@ var webpackTestConfig = merge(webpackBaseConfig, {
         options: {
           limit: 1000,
           useRelativePath: true,
+          publicPath: './',
+          name: '[name].[ext]'
+        }
+      },
+      {
+        test: /\.(woff|woff2|svg|ttf|eot)$/,
+        loader: 'file-loader',
+        options: {
+          useRelativePath: false,
           publicPath: './',
           name: '[name].[ext]'
         }

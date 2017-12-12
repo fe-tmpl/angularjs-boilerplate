@@ -10,7 +10,8 @@
   "scripts": {
     "dev": "gulp serve",
     "clean": "gulp clean",
-    "build": "gulp build"
+    "build": "gulp build",
+    "test": "gulp test"
   },
   "license": "MIT",
   "author": "Aquariuslt<superaquariuslt@gmail.com>",

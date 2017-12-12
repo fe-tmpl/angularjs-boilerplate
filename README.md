@@ -1,6 +1,6 @@
 # AngularJS Boilerplate
 
-[![Build Status](https://travis-ci.org/mean-engineering/angularjs-boilerplate.svg?branch=master)](https://travis-ci.org/mean-engineering/angularjs-boilerplate)
+[![Build Status](https://travis-ci.org/Aquariuslt/angularjs-boilerplate.svg?branch=master)](https://travis-ci.org/Aquariuslt/angularjs-boilerplate)
 [![Coverage Status](https://coveralls.io/repos/github/Aquariuslt/angularjs-boilerplate/badge.svg?branch=master)](https://coveralls.io/github/Aquariuslt/angularjs-boilerplate?branch=master)
 
 ## Description

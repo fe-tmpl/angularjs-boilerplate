@@ -11,54 +11,56 @@ var webpackBaseConfig = require('./webpack.base.config');
 
 var pathUtil = require('../utils/path.util');
 
+var webpackTestConfig = merge(webpackBaseConfig, {
 
-var webpackProdConfig = merge(webpackBaseConfig, {
-
-  devtool: 'source-map',
+  devtool: 'eval-source-map',
   output: {
-    path: pathUtil.resolve(baseConfig.dir.dist),
-    filename: '[name].[chunkhash].js',
-    chunkFilename: '[id].[chunkhash].js'
+    path: pathUtil.resolve(baseConfig.dir.build),
+    filename: '[name].test.js',
+    chunkFilename: '[id].test.js'
+  },
+  module: {
+    rules: [
+      {
+        enforce: 'post',
+        test: /\.js$/,
+        include: [
+          pathUtil.resolve('src/app')
+        ],
+        exclude: [
+          /node_modules/,
+          /vendor/
+        ],
+        loader: 'istanbul-instrumenter-loader'
+      },
+      {
+        test: /\.css$/,
+        include: [
+          pathUtil.resolve('src/main/webapp'),
+          pathUtil.resolve('src/test/js/unit/specs')
+        ],
+        exclude: [
+          /node_modules/
+        ],
+        use: ['style-loader', 'css-loader']
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg|ico)$/,
+        loader: 'url-loader',
+        options: {
+          limit: 1000,
+          useRelativePath: true,
+          publicPath: './',
+          name: '[name].[ext]'
+        }
+      }
+    ]
   },
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: '"production"'
+        NODE_ENV: '"test"'
       }
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: function (module) {
-        return (
-          module.resource &&
-          /\.js$/.test(module.resource) &&
-          module.resource.indexOf(
-            pathUtil.resolve('node_modules')
-          ) === 0
-        );
-      }
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      },
-      mangle: false,
-      sourceMap: true
-    }),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true
-    }),
-    new OptimizeCssAssetsPlugin({
-      cssProcessorOptions: {
-        safe: true,
-        discardComments: {
-          removeAll: true
-        }
-      },
-      canPrint: false
-    }),
-    new ExtractTextPlugin({
-      filename: '[name].[chunkhash].css'
     }),
     new HtmlWebpackPlugin({
       template: './' + baseConfig.dir.src + '/index.html',
@@ -70,8 +72,7 @@ var webpackProdConfig = merge(webpackBaseConfig, {
         removeAttributeQuotes: false
       },
       chunksSortMode: 'dependency'
-    }),
-    new CopyWebpackPlugin(baseConfig.dir.assets)
+    })
   ],
   stats: {
     colors: true,
@@ -89,4 +90,4 @@ var webpackProdConfig = merge(webpackBaseConfig, {
   }
 });
 
-module.exports = webpackProdConfig;
+module.exports = webpackTestConfig;

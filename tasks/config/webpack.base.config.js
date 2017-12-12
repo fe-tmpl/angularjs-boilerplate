@@ -1,8 +1,8 @@
+var path = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-
 var baseConfig = require('./base.config');
 
-var pathUtil = require('../utils/path-util');
+var pathUtil = require('../utils/path.util');
 
 module.exports = {
   entry: {
@@ -16,7 +16,7 @@ module.exports = {
     rules: [
       {
         test: /\.html$/,
-        exclude: pathUtil.resolve(baseConfig.dir.src) + '/index.html',
+        exclude: pathUtil.resolve(baseConfig.dir.src) + path.sep +'index.html',
         loader: 'ng-cache-loader?prefix=[dir]/[dir]/[dir]'
       },
       {

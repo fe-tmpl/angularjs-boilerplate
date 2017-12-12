@@ -9,7 +9,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var baseConfig = require('./base.config');
 var webpackBaseConfig = require('./webpack.base.config');
 
-var pathUtil = require('../utils/path-util');
+var pathUtil = require('../utils/path.util');
 
 
 const PROTOCOL = 'http://';
